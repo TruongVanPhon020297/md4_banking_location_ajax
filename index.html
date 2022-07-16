@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/sweetalert/v2/sweetalert2.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style2.css">
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <div class="row">
+                <div class="col-sm-5">
+                    <h1>List of customers</h1>
+                </div>
+                <div class="col-sm-7">
+                    <a class="btn btn-outline-light create-modal"><i class="fa fa-plus-square-o"></i>
+                        <span id="btnAddnew">Add New Customer</span></a>
+                    <a href="/transfers" class="btn btn-outline-light"><i class="fa fa-history"></i> <span>Transfer history</span></a>
+                </div>
+            </div>
+        </header>
+        <div class="box-body">
+
+            <input type="hidden" id="currentRow"/>
+
+            <table id="tbListCustomers" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>FullName</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Balance</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Ward</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div id="showButton" class="hideButton">
+            <button id="btnUpdate" data-id="" class="btn btn-outline-danger">Update</button>
+        </div>
+    </div>
+    <div id="modalCreateCustomer" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Customer information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-alert-danger hide"></div>
+                    <form id="frmUpdateCustomer">
+                        <fieldset class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Full name</label>
+                                <input type="text" class="form-control" id="fullNameCre" name="fullNameCre">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Email</label>
+                                <input type="text" class="form-control" id="emailCre" name="emailCre">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phoneCre" name="phoneCre">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Province</label>
+                                <select class="form-select" id="provinceCre" name="provinceCre"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">District</label>
+                                <select class="form-select" id="districtCre" name="districtCre"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Ward</label>
+                                <select class="form-select" id="wardCre" name="wardCre"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Address</label>
+                                <input type="text" class="form-control" id="addressCre" name="addressCre">
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="btnCreateCustomer" class="btn btn-outline-secondary">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        Create customer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modalUpdateCustomer" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Customer information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-alert-danger hide"></div>
+                    <form id="frmUpdateCustomer">
+                        <fieldset class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Full name</label>
+                                <input type="text" class="form-control" id="fullNameUp" name="fullNameUp">
+                                <input type="hidden" id="idCustomerUpdate">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Email</label>
+                                <input type="text" class="form-control" id="emailUp" name="emailUp">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phoneUp" name="phoneUp">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Province</label>
+                                <select class="form-select" id="provinceUp" name="provinceUp"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">District</label>
+                                <select class="form-select" id="districtUp" name="districtUp"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Ward</label>
+                                <select class="form-select" id="wardUp" name="wardUp"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Address</label>
+                                <input type="text" class="form-control" id="addressUp" name="addressUp">
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="btnUpdateCustomer" class="btn btn-outline-secondary">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        Update Customer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <script src="/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/jquery.validate.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/sweetalert/v2/sweetalert2.min.js"></script>
+    <script src="/assets/js/app.js"></script>
+
+    <script>
+        let locationRegion = new LocationRegion()
+        let listLocationRegion = [];
+
+        let customer = new Customer();
+
+        function loadCustomers() {
+            $.ajax({
+                "type": "GET",
+                "url": "http://localhost:3002/customers"
+            })
+            .done((data) => {
+                $.each(data, (i, item) => {
+                    customer = item;
+                    locationRegion = customer.locationRegion;
+
+                    let str = `
+                        <tr id = "tr_${customer.id}" data-id="${customer.id}">
+                            <td>${customer.id}</td>
+                            <td>${customer.fullName}</td>
+                            <td>${customer.email}</td>
+                            <td>${customer.phone}</td>
+                            <td>${customer.balance}</td>
+                            <td>${locationRegion.provinceName}</td>
+                            <td>${locationRegion.districtName}</td>
+                            <td>${locationRegion.wardName}</td>
+                            <td>${locationRegion.address}</td>
+                        </tr>
+                    `;
+
+                    $('#tbListCustomers tbody').prepend(str);
+                });
+
+                handleClickRow();
+            });
+        }
+
+        loadCustomers();
+
+        function getAllProvince() {
+            let listProvince = [];
+            
+            $.ajax({
+                "async" : false,
+                "type": "GET",
+                "url": "https://vapi.vnappmob.com/api/province/"
+            })
+            .done((data) => {
+                listProvince = data;
+            });
+
+            return listProvince;
+        }
+
+        function getAllDistrictByProvinceId(provinceId) {
+            let listDistrict = [];
+            
+            $.ajax({
+                "async" : false,
+                "type": "GET",
+                "url": "https://vapi.vnappmob.com/api/province/district/" + provinceId
+            })
+            .done((data) => {
+                listDistrict = data;
+            });
+
+            return listDistrict;
+        }
+
+        function getAllWardByDistrictId(districtId){
+            let listWard = [];
+            
+            $.ajax({
+                "async" : false,
+                "type": "GET",
+                "url": "https://vapi.vnappmob.com/api/province/ward/" + districtId
+            })
+            .done((data) => {
+                listWard = data;
+            });
+
+            return listWard;
+        }
+
+
+
+        function handleGroupShowModal() {
+            handleShowCreateModal();
+        }
+        handleGroupShowModal()
+
+        function handleShowCreateModal() {
+            $('#btnAddnew').on("click",function(){
+                let listProvinceData = getAllProvince();
+                let strDis = "";
+                let provinceIdFirst = (listProvinceData.results)[0].province_id;
+                let listDistrictData = getAllDistrictByProvinceId(provinceIdFirst);
+                $.each(listDistrictData.results, (i, item) => {
+                    strDis += `<option value="${item.district_id}">${item.district_name}</option>`;
+                })
+                let strWa = "";
+                let districtIdFirst = (listDistrictData.results)[0].district_id;
+                let listWardData = getAllWardByDistrictId(districtIdFirst);
+                $.each(listWardData.results, (i, item) => {
+                    strWa += `<option value = "${item.ward_id}">${item.ward_name}</option>`;
+                })
+                // $('#provinceCre').prepend(strPro);
+                $('#districtCre').prepend(strDis);
+                $('#wardCre').prepend(strWa);
+                $('#modalCreateCustomer').modal('show');
+            })
+        }
+
+        function clearInput() {
+            $('#fullNameCre').val("");
+            $('#emailCre').val("");
+            $('#phoneCre').val("");
+            $('#addressCre').val("");
+        }
+
+        function drawProvincesCrea() {
+            return $.ajax({
+                "async" : false,
+                "type": "GET",
+                "url": "https://vapi.vnappmob.com/api/province/"
+            })
+            .done((data) => {
+                $.each(data.results, (i, item) => {
+                    let str = `<option value="${item.province_id}">${item.province_name}</option>`;
+                    $("#provinceCre").prepend(str);
+                })
+            });
+        }
+
+        drawProvincesCrea();
+
+        function drawProvincesUp() {
+            return $.ajax({
+                "async" : false,
+                "type": "GET",
+                "url": "https://vapi.vnappmob.com/api/province/"
+            })
+            .done((data) => {
+                $.each(data.results, (i, item) => {
+                    let str = `<option value="${item.province_id}">${item.province_name}</option>`;
+                    $("#provinceUp").prepend(str);
+                })
+            });
+        }
+
+        function drawDistrictsUp(provinceId) {
+            return $.ajax({
+                "async" : false,
+                "type": "GET",
+                "url": "https://vapi.vnappmob.com/api/province/district/" + provinceId
+            })
+            .done((data) => {
+                $("#districtUp").html("");
+                $.each(data.results, (i, item) => {
+                    let str = `<option value="${item.district_id}">${item.district_name}</option>`;
+                    $("#districtUp").prepend(str);
+                })
+            });
+        }
+
+        function drawWardsUp(districtId) {
+            return $.ajax({
+                "async" : false,
+                "type": "GET",
+                "url": "https://vapi.vnappmob.com/api/province/ward/" + districtId
+            })
+            .done((data) => {
+                $("#wardUp").html("");
+                $.each(data.results, (i, item) => {
+                    let str = `<option value="${item.ward_id}">${item.ward_name}</option>`;
+                    $("#wardUp").prepend(str);
+                })
+            });
+        }
+
+        drawProvincesUp();
+
+        function handleShowUpdateModal(rowId) {
+            $("#showButton").removeClass("hideButton").addClass("showButton");
+
+            $('#btnUpdate').on('click',function(){
+                $.ajax({
+                    "async" : false,
+                    "type": "GET",
+                    "url": "http://localhost:3002/customers/" + rowId
+                })
+                .done((data) => {
+                    customer = data;
+                    locationRegion = customer.locationRegion;
+                    $('#fullNameUp').val(customer.fullName);
+                    $('#emailUp').val(customer.email);
+                    $('#phoneUp').val(customer.phone);
+                    $('#addressUp').val(locationRegion.address);
+                    $('#idCustomerUpdate').val(rowId);
+                    $("#provinceUp").val(customer.locationRegion.provinceId);
+
+                    drawDistrictsUp(customer.locationRegion.provinceId).then(() => {
+                        $("#districtUp").val(customer.locationRegion.districtId);
+                        drawWardsUp(customer.locationRegion.districtId).then(() => {
+                            $("#wardUp").val(customer.locationRegion.wardId);
+                        });
+                    });
+                
+                    $('#modalUpdateCustomer').modal('show');
+                })
+                .fail((error) => {
+                    App.SweetAlert.showAlertError('Người Dùng Không Tồn Tại');
+                })
+            })
+        }
+
+        function handleClickRow() {
+            $('#tbListCustomers tbody tr').on('click',function(){
+                let rowId = $(this).data('id');
+                $('#tbListCustomers tbody tr').removeClass("red");
+                $(this).addClass("red");
+                handleShowUpdateModal(rowId);
+            })
+        }
+
+
+        function districtChange(provinceIdChange){
+            let listProvinceChange = getAllDistrictByProvinceId(provinceIdChange);
+            let strChange = "";
+            $.each(listProvinceChange.results, (i, item) => {
+                strChange += `<option value="${item.district_id}">${item.district_name}</option>`;
+            })
+            $('#districtCre').empty();
+            $('#districtCre').prepend(strChange);
+            let districtIdChange = (listProvinceChange.results)[0].district_id;
+            wardChange(districtIdChange);
+        }
+
+        function districtChangeUp(provinceIdChange){
+            let listProvinceChange = getAllDistrictByProvinceId(provinceIdChange);
+            let strChange = "";
+            $.each(listProvinceChange.results, (i, item) => {
+                strChange += `<option value="${item.district_id}">${item.district_name}</option>`;
+            })
+            $('#districtUp').empty();
+            $('#districtUp').prepend(strChange);
+            let districtIdChange = (listProvinceChange.results)[0].district_id;
+            wardChangeUp(districtIdChange);
+        }
+
+        function wardChange(districtIdChange){
+            let listDistrictChange = getAllWardByDistrictId(districtIdChange);
+            let strChange = "";
+            $.each(listDistrictChange.results, (i, item) => {
+                strChange += `<option value = "${item.ward_id}">${item.ward_name}</option>`;
+            })
+            $('#wardCre').empty();
+            $('#wardCre').prepend(strChange);
+        }
+
+        function wardChangeUp(districtIdChange){
+            let listDistrictChange = getAllWardByDistrictId(districtIdChange);
+            let strChange = "";
+            $.each(listDistrictChange.results, (i, item) => {
+                strChange += `<option value = "${item.ward_id}">${item.ward_name}</option>`;
+            })
+            $('#wardUp').empty();
+            $('#wardUp').prepend(strChange);
+        }
+
+        $('#provinceCre').on('change',function(){
+            let provinceIdChange = $('#provinceCre').val();
+            districtChange(provinceIdChange);
+        })
+
+        $('#provinceUp').on('change',function(){
+            let provinceIdChange = $('#provinceUp').val();
+            districtChangeUp(provinceIdChange);
+        })
+
+        $('#districtCre').on('change',function(){
+            let districtIdChange = $('#districtCre').val();
+            wardChange(districtIdChange);
+        })
+
+        $('#districtUp').on('change',function(){
+            let districtIdChange = $('#districtUp').val();
+            wardChangeUp(districtIdChange);
+        })
+
+        $('#btnCreateCustomer').on('click',function(){
+            let fullName = $('#fullNameCre').val();
+            let email = $('#emailCre').val();
+            let phone = $('#phoneCre').val();
+            let province = $('#provinceCre').val();
+            let district = $('#districtCre').val();
+            let ward = $('#wardCre').val();
+            let address = $('#addressCre').val();
+            let provinceName = $('#provinceCre :selected').text();
+            let districtName = $('#districtCre :selected').text();
+            let wardName = $('#wardCre :selected').text();
+            
+            let str = `Full Name : ${fullName} Email : ${email} Phone : ${phone} Provice : ${province} District : ${district} Ward : ${ward} Address : ${address}`;
+            let listProvince = getAllProvince();
+            let flag = false;
+            $.each(listProvince.results, (i, item) => {
+                if(province == item.province_id) {
+                    flag = true;
+                    return false;
+                }
+            })
+            if(flag) {
+                flag = false;
+                let listDistrict = getAllDistrictByProvinceId(province);
+                $.each(listDistrict.results, (i, item) => {
+                    if(district == item.district_id) {
+                        flag = true;
+                        return false;
+                    }
+                })
+                if(flag){
+                    flag = false;
+                    let listWard = getAllWardByDistrictId(district);
+                    $.each(listWard.results, (i, item) => {
+                        if(ward == item.ward_id) {
+                            flag = true;
+                            return false;
+                        }
+                    })
+                    if(flag) {
+                        locationRegion.address = address;
+                        locationRegion.provinceId = province;
+                        locationRegion.provinceName = provinceName;
+                        locationRegion.districtId = district;
+                        locationRegion.districtName = districtName;
+                        locationRegion.wardId = ward;
+                        locationRegion.wardName = wardName;
+                       
+                        delete customer.id;
+                        customer.fullName = fullName;
+                        customer.email = email;
+                        customer.phone = phone;
+                        customer.locationRegion = locationRegion;
+
+                        console.log(customer)
+
+                        
+                        $.ajax({
+                            "headers": {
+                                "accepts": "application/json",
+                                "content-type": "application/json"
+                            },
+                            "type": "POST",
+                            "url": "http://localhost:3002/customers",
+                            "data": JSON.stringify(customer)
+                        })
+                        .done((item) => {
+                            
+                            customer = item;
+                            locationRegion = customer.locationRegion;
+
+                            let str = `
+                                <tr id = "tr_${customer.id}" data-id="${customer.id}">
+                                    <td>${customer.id}</td>
+                                    <td>${customer.fullName}</td>
+                                    <td>${customer.email}</td>
+                                    <td>${customer.phone}</td>
+                                    <td>${customer.balance}</td>
+                                    <td>${locationRegion.provinceName}</td>
+                                    <td>${locationRegion.districtName}</td>
+                                    <td>${locationRegion.wardName}</td>
+                                    <td>${locationRegion.address}</td>
+                                </tr>
+                            `;
+
+                            $('#tbListCustomers tbody').prepend(str);
+                            $('#modalCreateCustomer').modal('hide');
+                            clearInput();
+                            App.SweetAlert.showAlertSuccess('Tạo Mới khách Hàng Thành Công');
+                            handleClickRow();
+                        })
+                        .fail((error) => {
+                            App.SweetAlert.showAlertError('Tạo Mới Thất Bại');
+                        })
+                    }else {
+                        App.SweetAlert.showAlertError('Xã / Thị Trấn Không Tồn Tại');
+                    }
+                }else{
+                    App.SweetAlert.showAlertError('Phường / Huyện Không Tồn Tại');
+                }
+            }else{
+                App.SweetAlert.showAlertError('Thành Phố / Tỉnh Không Tồn Tại');
+            }
+        })
+
+        function getCustomerById(customerId) {
+            return $.ajax({
+                "type": "GET",
+                "url": "http://localhost:3002/customers/" + customerId
+            })
+            .done((data) => {
+                customer = data;
+            })
+            .fail((error) => {
+                App.SweetAlert.showAlertError('Khách Hàng Không Tồn Tại');
+            }) 
+        }
+
+        $('#btnUpdateCustomer').on('click',function(){
+            let fullName = $('#fullNameUp').val();
+            let email = $('#emailUp').val();
+            let phone = $('#phoneUp').val();
+            let province = $('#provinceUp').val();
+            let district = $('#districtUp').val();
+            let ward = $('#wardUp').val();
+            let address = $('#addressUp').val();
+            let provinceName = $('#provinceUp :selected').text();
+            let districtName = $('#districtUp :selected').text();
+            let wardName = $('#wardUp :selected').text();
+            let customerId = $('#idCustomerUpdate').val();
+            
+            let str = `Full Name : ${fullName} Email : ${email} Phone : ${phone} Provice : ${province} District : ${district} Ward : ${ward} Address : ${address}`;
+            
+            let listProvince = getAllProvince();
+            let flag = false;
+            $.each(listProvince.results, (i, item) => {
+                if(province == item.province_id) {
+                    flag = true;
+                    return false;
+                }
+            })
+            if(flag) {
+                flag = false;
+                let listDistrict = getAllDistrictByProvinceId(province);
+                $.each(listDistrict.results, (i, item) => {
+                    if(district == item.district_id) {
+                        flag = true;
+                        return false;
+                    }
+                })
+                if(flag){
+                    flag = false;
+                    let listWard = getAllWardByDistrictId(district);
+                    $.each(listWard.results, (i, item) => {
+                        if(ward == item.ward_id) {
+                            flag = true;
+                            return false;
+                        }
+                    })
+                    if(flag) {
+
+                        getCustomerById(customerId).then(() => {
+                            locationRegion.address = address;
+                            locationRegion.provinceId = province;
+                            locationRegion.provinceName = provinceName;
+                            locationRegion.districtId = district;
+                            locationRegion.districtName = districtName;
+                            locationRegion.wardId = ward;
+                            locationRegion.wardName = wardName;
+                            
+
+                            customer.fullName = fullName;
+                            customer.email = email;
+                            customer.phone = phone;
+                            customer.locationRegion = locationRegion;
+
+                            $.ajax({
+                                "headers": {
+                                    "accepts": "application/json",
+                                    "content-type": "application/json"
+                                },
+                                "type": "PUT",
+                                "url": "http://localhost:3002/customers/" + customer.id,
+                                "data": JSON.stringify(customer)
+                            })
+                            .done((item) => {
+                                
+                                customer = item;
+                                locationRegion = customer.locationRegion;
+
+                                let currentRow = $('#tr_' + customer.id);
+
+                                let updateRow = ` <tr id = "tr_${customer.id}" data-id="${customer.id}">
+                                                        <td>${customer.id}</td>
+                                                        <td>${customer.fullName}</td>
+                                                        <td>${customer.email}</td>
+                                                        <td>${customer.phone}</td>
+                                                        <td>${customer.balance}</td>
+                                                        <td>${locationRegion.provinceName}</td>
+                                                        <td>${locationRegion.districtName}</td>
+                                                        <td>${locationRegion.wardName}</td>
+                                                        <td>${locationRegion.address}</td>
+                                                    </tr>`;
+                                currentRow.replaceWith(updateRow);        
+                                App.SweetAlert.showAlertSuccess('Cập Nhập Thông Tin Khách Hàng Thành Công');
+                                $("#showButton").removeClass("showButton").addClass("hideButton");
+                                $('#modalUpdateCustomer').modal('hide');
+                                handleClickRow();
+                            })
+                            .fail((error) => {
+                                App.SweetAlert.showAlertError('Tạo Mới Thất Bại');
+                            })
+                        })
+                    }else {
+                        App.SweetAlert.showAlertError('Xã / Thị Trấn Không Tồn Tại');
+                    }
+                }else{
+                    App.SweetAlert.showAlertError('Phường / Huyện Không Tồn Tại');
+                }
+            }else{
+                App.SweetAlert.showAlertError('Thành Phố / Tỉnh Không Tồn Tại');
+            }
+        })
+
+    </script>
+    
+</body>
+</html>
