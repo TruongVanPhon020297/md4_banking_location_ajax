@@ -112,8 +112,11 @@ header .btn {
     padding-top: 6px;
     padding-left: 50px;
     padding-right: 50px;
-    background: #7abde8;
+    background: black;
     color: #ffffff;
+}
+.showButton button {
+    margin: 0 20px;
 }
 
 .hideButton {
